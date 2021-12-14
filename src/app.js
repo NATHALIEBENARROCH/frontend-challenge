@@ -5,25 +5,61 @@ const doggoName = document.getElementById("doggo-name");
 const doggoBreed = document.getElementById("doggo-breed");
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirm-password");
-//added these two
 const email = document.getElementById("email");
 const confirmEmail = document.getElementById("confirm-email");
 
 const successModal = document.getElementById("modal-success");
 
+const cookieBanner = document.getElementById("cookie-banner");
+
 initFormListeners(form);
+//ici argument de la fonction est du HTML
 initModals(successModal);
 initCookieBanner();
 populateDoggoBreedSelect();
 
+//added an event listener on form submit
 function initFormListeners(formToInit) {
   formToInit.addEventListener("submit", (e) => {
     e.preventDefault();
     if (validateAllInputs()) {
       displaySuccessModal();
+      let values = {
+        "first-name": firstName.value,
+        "last-name": lastName.value,
+        "doggo-name": doggoName.value,
+        "doggo-breed": doggoBreed.value,
+        email: email.value,
+        password: password.value,
+        "confirm-email": validateEmail.value,
+        "confirm-password": validatePassword.value,
+      };
+      console.log("values:", values);
+      postToApi(values);
     }
   });
 }
+
+let postToApi = async (values) => {
+  let response = await fetch(
+    "https://api.devnovatize.com/frontend-challenge/",
+    {
+      method: "post",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    }
+  );
+  let body = await response.json();
+  console.log("body:", body);
+  // if (body.success) {
+  //   setOutfits(body.outfits);
+  //   Alert.alert("Congratulations!", body.message);
+  //   setIsSaveModalOpen(false);
+  // }
+};
 
 function initModals(successModalToInit) {
   let closeButtons = document.getElementsByClassName("modal__close");
@@ -41,18 +77,21 @@ function initModals(successModalToInit) {
 }
 
 function initCookieBanner() {
-  //target
-  let acceptCookiesButton = document.querySelector(
-    "#cookie-banner .button__primary"
-  );
-  //function
-  acceptCookiesButton.onclick = function () {
-    let cookieBanner = document.getElementById("cookie-banner");
+  const retrieveLocalStorage = localStorage.getItem("cookies");
+  if (retrieveLocalStorage === "accepted") {
     cookieBanner.style.display = "none";
+  }
+  let acceptCookiesButton = document.querySelector(
+    "#cookie-banner .button__accept"
+  );
+
+  acceptCookiesButton.onclick = function () {
+    cookieBanner.style.display = "none";
+    localStorage.setItem("cookies", "accepted");
   };
 
   let rejectCookiesButton = document.querySelector(
-    "#cookie-banner .button__secondary"
+    "#cookie-banner .button__reject"
   );
   rejectCookiesButton.onclick = function () {
     let cookieBanner = document.getElementById("cookie-banner");
@@ -75,6 +114,7 @@ function populateDoggoBreedSelect() {
       }
 
       response.json().then(function (data) {
+        data.sort();
         var selectElem = document.getElementById("doggo-breed");
         fillSelectElem(selectElem, data);
       });
@@ -107,23 +147,22 @@ function validateAllInputs() {
     validateInput(lastName) &&
     validateInput(doggoName) &&
     validateInput(doggoBreed) &&
-    //checking password and use of Validate Password function
-    validateInput(password, validatePassword) &&
-    validateInput(confirmPassword, function (value) {
-      //make sure password and confirm password same
-      return value === password.value.trim();
-    }) &&
-    //these two added
     validateInput(email, validateEmail) &&
     validateInput(confirmEmail, function (value) {
+      return value === email.value.trim();
+    }) &&
+    validateInput(password, validatePassword) &&
+    validateInput(confirmPassword, function (value) {
       return value === password.value.trim();
     });
 
   return allInputValids;
 }
 
-//this function sets or unsets the success of input validation(withsetSuccessInput)
+//this function sets or unsets the success of input validation(withs etSuccessInput)
 function validateInput(element, validationFunction) {
+  console.log("element is", element);
+  console.log("vf", validationFunction);
   let inputValid = isInputValid(element, validationFunction);
 
   inputValid ? setSuccessInput(element) : setErrorInput(element);
@@ -137,15 +176,18 @@ function isInputValid(element, validationFunction) {
 
   return !(value === "" || (validationFunction && !validationFunction(value)));
 }
+
 //checking valid password
 function validatePassword(password) {
-  let re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/; // 8 chars, lower, upper and digits
+  let re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   //use of regex to test the string password
-  return re.test(String(password));
+  // return re.test(String(password));
+  return true;
 }
 
 //on grandparent of input depending on each of these conditions a new classlist is added
 function setErrorInput(input) {
+  console.log("input is", input);
   const formControl = input.parentElement.parentElement;
   formControl.classList.add("error");
 }
@@ -163,7 +205,7 @@ function displaySuccessModal() {
 }
 
 //added this
-function validateEmail(password) {
+function validateEmail(email) {
   let re = /^\S+@\S+$/; // 8 chars, lower, upper and digits
-  return re.test(String(password));
+  return re.test(String(email));
 }

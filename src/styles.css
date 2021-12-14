@@ -70,6 +70,21 @@ body {
   max-height: none;
 }
 
+@media (max-width: 500px) {
+  .menu {
+  display:flex;
+  flex-direction: column;
+  }
+  .header .menu {
+    clear: none;
+    float: left;
+   line-height: 30px;
+  }
+  .photos {
+   display: none;
+  }
+}
+
 /* Success and failure modals */
 
 .modal {
@@ -112,10 +127,40 @@ body {
 
 /* Cookie bar */
 
-.cookie-banner {
+.remove-cookie-banner {
   display: none;
 }
 
+.cookie-banner {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  height: 100vh;
+  z-index: 1;
+  padding: 180px 50px;
+}
+.cookie-banner__content {
+  background-color: white;
+  padding: 20px;
+  text-align: center;
+}
+cookie-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.button__accept {
+  background-color: var(--orange);
+  border: 0.125rem solid var(--white);
+  color: var(--light-grey);
+  width: 90px;
+}
+
+.button__reject {
+  background-color: var(--white);
+  border: 0.125rem solid var(--orange);
+  color: var(--orange);
+  width: 90px;
+}
 /* Main page content */
 
 .main {
@@ -150,9 +195,11 @@ body {
   font-weight: bold;
   position: relative;
   transition-duration: 0.4s;
-  overflow: hidden;
+  overflow: hidden;~
   cursor: pointer;
 }
+
+
 
 .button__primary {
   background-color: var(--orange);
@@ -191,6 +238,17 @@ button[disabled] {
 
 /* Doggo pictures grid */
 
+
+@media (max-width: 770px) {
+ .hidephoto {
+  display:none;
+  }
+
+ .showphoto {
+    display:none;
+  }
+}
+
 .photos {
   display: flex;
   flex-wrap: wrap;
@@ -204,6 +262,8 @@ button[disabled] {
   max-width: calc(33% - 1rem);
   object-fit: cover;
 }
+
+
 
 /* Create your profile form */
 
@@ -293,3 +353,9 @@ button[disabled] {
 .form button {
   width: 100%;
 }
+
+
+
+
+
+
