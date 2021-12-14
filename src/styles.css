@@ -24,6 +24,43 @@ body {
   background-color: var(--orange);
 }
 
+@media (max-width: 500px) {
+  .main {
+    margin:auto!important;
+    display:flex;
+   flex-direction: column;
+   justify-content: center;
+   width:80%;
+  }
+  .form {
+    border: 10px red solid;
+  }
+   .menu {
+   display:flex;
+   flex-direction: column;
+   }
+   .header .menu {
+     clear: none;
+     float: left!important;
+    line-height: 30px!important;
+   }
+   .photos {
+    display: none!important;
+   }
+
+   .mobile {
+     display:flex!important;
+     flex-direction:column!important;
+
+   }
+ }
+ 
+ @media (max-width: 770px) {
+   .hidephoto {
+    display:none!important;
+    }
+  
+  }
 /* Headings */
 
 .h2 {
@@ -70,20 +107,6 @@ body {
   max-height: none;
 }
 
-@media (max-width: 500px) {
-  .menu {
-  display:flex;
-  flex-direction: column;
-  }
-  .header .menu {
-    clear: none;
-    float: left;
-   line-height: 30px;
-  }
-  .photos {
-   display: none;
-  }
-}
 
 /* Success and failure modals */
 
@@ -239,15 +262,7 @@ button[disabled] {
 /* Doggo pictures grid */
 
 
-@media (max-width: 770px) {
- .hidephoto {
-  display:none;
-  }
 
- .showphoto {
-    display:none;
-  }
-}
 
 .photos {
   display: flex;
