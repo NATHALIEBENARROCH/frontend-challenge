@@ -59,6 +59,9 @@ body {
    .hidephoto {
     display:none!important;
     }
+  .showphoto {
+    min-width: 50px;
+  }
   
   }
 /* Headings */

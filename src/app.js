@@ -31,8 +31,8 @@ function initFormListeners(formToInit) {
         "doggo-breed": doggoBreed.value,
         email: email.value,
         password: password.value,
-        "confirm-email": validateEmail.value,
-        "confirm-password": validatePassword.value,
+        "confirm-email": confirmEmail.value,
+        "confirm-password": confirmPassword.value,
       };
       console.log("values:", values);
       postToApi(values);
@@ -41,17 +41,14 @@ function initFormListeners(formToInit) {
 }
 
 let postToApi = async (values) => {
-  let response = await fetch(
-    "https://api.devnovatize.com/frontend-challenge/",
-    {
-      method: "post",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    }
-  );
+  let response = await fetch("https://api.devnovatize.com/frontend-challenge", {
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+  });
   let body = await response.json();
   console.log("body:", body);
   // if (body.success) {
@@ -180,9 +177,7 @@ function isInputValid(element, validationFunction) {
 //checking valid password
 function validatePassword(password) {
   let re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-  //use of regex to test the string password
-  // return re.test(String(password));
-  return true;
+  return re.test(String(password));
 }
 
 //on grandparent of input depending on each of these conditions a new classlist is added
